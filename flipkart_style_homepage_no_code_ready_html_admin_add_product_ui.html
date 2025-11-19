@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fashion Marketplace — Demo Homepage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* small helper for drag-drop preview */
+    .dropzone { min-height: 140px; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-6">
+          <a href="#" class="text-2xl font-extrabold text-indigo-600">ShopKart</a>
+          <nav class="hidden md:flex gap-4">
+            <a href="#men" class="text-sm hover:text-indigo-600">Men</a>
+            <a href="#women" class="text-sm hover:text-indigo-600">Women</a>
+            <a href="#accessories" class="text-sm hover:text-indigo-600">Accessories</a>
+          </nav>
+        </div>
+
+        <div class="flex-1 mx-6">
+          <div class="relative">
+            <input id="search" placeholder="Search products, brands and more" class="w-full border rounded-lg py-3 px-4 pr-28 focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+            <button class="absolute right-1 top-1 bottom-1 bg-indigo-600 text-white px-4 py-2 rounded-lg">Search</button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <button id="loginBtn" class="text-sm">Login / Signup</button>
+          <button id="sellerBtn" class="text-sm text-indigo-600">Sell on Platform</button>
+          <div class="relative">
+            <button id="cartBtn" class="bg-gray-100 px-3 py-2 rounded-lg">Cart (0)</button>
+          </div>
+          <!-- Admin quick add product (visible to admin only) -->
+          <button id="adminAddBtn" class="ml-3 bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm">Admin: Add Product</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+      <div class="lg:col-span-2 bg-gradient-to-r from-indigo-600 to-indigo-400 text-white rounded-2xl p-10">
+        <h1 class="text-3xl md:text-4xl font-bold">Fashion that Fits Your Style</h1>
+        <p class="mt-3 text-lg/relaxed">Premium clothes & accessories — best prices, fast delivery, easy returns.</p>
+        <div class="mt-6 flex gap-3">
+          <a href="#men" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-semibold">Shop Men</a>
+          <a href="#women" class="bg-white/20 border border-white px-4 py-2 rounded-lg">Shop Women</a>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 shadow">
+        <h3 class="font-semibold">Deals of the day</h3>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li>Up to 50% off on jackets</li>
+          <li>Buy 2 get 10% off on accessories</li>
+          <li>Free delivery over ₹499</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="mt-10">
+      <h3 class="text-xl font-semibold mb-4">Featured Categories</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <a href="#men" class="bg-white p-6 rounded-2xl shadow hover:shadow-md text-center">Men’s T-Shirts</a>
+        <a href="#women" class="bg-white p-6 rounded-2xl shadow hover:shadow-md text-center">Women’s Dresses</a>
+        <a href="#accessories" class="bg-white p-6 rounded-2xl shadow hover:shadow-md text-center">Bags & Wallets</a>
+        <a href="#accessories" class="bg-white p-6 rounded-2xl shadow hover:shadow-md text-center">Sunglasses</a>
+      </div>
+    </section>
+
+    <!-- Filters & Sorting + Product Grid -->
+    <section class="mt-10">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-semibold">Trending Products</h3>
+        <div class="flex gap-3">
+          <select class="p-2 rounded-lg border"><option>Sort by: Popularity</option><option>Price: Low to High</option><option>Price: High to Low</option></select>
+          <select class="p-2 rounded-lg border"><option>Size</option><option>S</option><option>M</option><option>L</option></select>
+        </div>
+      </div>
+
+      <div id="productGrid" class="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Product Card Template (multiple) -->
+      </div>
+
+      <div class="mt-6 text-center">
+        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Load more</button>
+      </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="mt-12 bg-white p-6 rounded-2xl shadow">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <h4 class="font-semibold">Start selling with us</h4>
+          <p class="text-sm text-gray-600">Simple onboarding and vendor dashboard — add products, manage orders, get payouts.</p>
+        </div>
+        <div>
+          <button id="beSeller" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Become a Seller</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Admin Add Product Modal (hidden by default) -->
+  <div id="addProductModal" class="fixed inset-0 bg-black/40 flex items-start justify-center p-6 hidden z-50">
+    <div class="bg-white rounded-2xl w-full max-w-3xl shadow-lg overflow-auto max-h-[90vh]">
+      <div class="p-6 border-b flex items-center justify-between">
+        <h3 class="text-lg font-semibold">Add New Product (Admin)</h3>
+        <button id="closeModal" class="text-gray-500">Close</button>
+      </div>
+
+      <form id="addProductForm" class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium">Product Title</label>
+          <input name="title" required class="w-full p-3 border rounded-lg mt-1" placeholder="Brand Name — Product Name (Color) — Key feature" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium">Brand</label>
+            <input name="brand" class="w-full p-3 border rounded-lg mt-1" placeholder="Brand name" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Category</label>
+            <select name="category" class="w-full p-3 border rounded-lg mt-1">
+              <option>Men > T‑shirts</option>
+              <option>Men > Shirts</option>
+              <option>Women > Dresses</option>
+              <option>Accessories > Watches</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium">Price (₹)</label>
+            <input name="price" type="number" class="w-full p-3 border rounded-lg mt-1" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium">MRP (₹)</label>
+            <input name="mrp" type="number" class="w-full p-3 border rounded-lg mt-1" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Stock Qty</label>
+            <input name="stock" type="number" class="w-full p-3 border rounded-lg mt-1" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Short Description / Highlights (comma separated)</label>
+          <input name="highlights" class="w-full p-3 border rounded-lg mt-1" placeholder="Soft cotton, Regular fit, Machine wash" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Full Description</label>
+          <textarea name="description" rows="4" class="w-full p-3 border rounded-lg mt-1"></textarea>
+        </div>
+
+        <!-- Drag & Drop Images -->
+        <div>
+          <label class="block text-sm font-medium">Product Images (Drag & Drop)</label>
+          <div id="dropzone" class="dropzone mt-2 border-dashed border-2 border-gray-300 rounded-lg p-4 flex items-center justify-center text-center">
+            <div>
+              <p class="text-sm text-gray-600">Drag & drop images here or <button type="button" id="selectFiles" class="text-indigo-600 underline">browse</button></p>
+              <p class="text-xs text-gray-400 mt-2">Recommended: 4 images — front, back, closeup, model</p>
+            </div>
+          </div>
+          <input id="fileInput" type="file" accept="image/*" multiple class="hidden" />
+          <div id="preview" class="mt-3 grid grid-cols-3 gap-2"></div>
+        </div>
+
+        <!-- Variants (simple UI) -->
+        <div>
+          <label class="block text-sm font-medium">Variants (size, color) — Optional</label>
+          <input name="variants" class="w-full p-3 border rounded-lg mt-1" placeholder="Example: S,M,L | Red,Blue,Black" />
+          <p class="text-xs text-gray-400 mt-1">Write sizes separated by comma and colors separated by comma. Backend will create combinations.</p>
+        </div>
+
+        <!-- Shipping, Return, SEO -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium">Weight (grams)</label>
+            <input name="weight" class="w-full p-3 border rounded-lg mt-1" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Return Policy</label>
+            <select name="return_policy" class="w-full p-3 border rounded-lg mt-1">
+              <option>7 days</option>
+              <option>10 days</option>
+              <option>No returns</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-4">
+          <div class="text-sm text-gray-500">Draft saved locally in browser (demo).</div>
+          <div class="flex gap-2">
+            <button type="button" id="saveDraft" class="px-4 py-2 border rounded-lg">Save Draft</button>
+            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg">Publish</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-12 bg-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <h4 class="font-semibold">ShopKart</h4>
+        <p class="text-sm text-gray-600 mt-2">Buy trending fashion from trusted sellers.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold">Customer Care</h4>
+        <ul class="text-sm text-gray-600 mt-2 space-y-1">
+          <li>Help Center</li>
+          <li>Returns</li>
+          <li>Track Order</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold">Payment Methods</h4>
+        <p class="text-sm text-gray-600 mt-2">UPI • Cards • Netbanking • Wallets • COD</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Demo: populate product grid with sample cards
+    const products = [];
+    for (let i=1;i<=12;i++) products.push({title:`Sample T-shirt ${i}`, price:299+i*10, mrp:499+i*10, img:`https://picsum.photos/seed/p${i}/600/600`});
+
+    const grid = document.getElementById('productGrid');
+    function renderGrid(){
+      grid.innerHTML = '';
+      products.forEach(p=>{
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl shadow p-3 flex flex-col';
+        card.innerHTML = `
+          <img src="${p.img}" class="h-48 w-full object-cover rounded-lg" />
+          <h4 class="mt-3 font-medium text-sm">${p.title}</h4>
+          <div class="mt-2 flex items-baseline gap-2">
+            <div class="text-lg font-semibold">₹${p.price}</div>
+            <div class="text-xs line-through text-gray-400">₹${p.mrp}</div>
+          </div>
+          <div class="mt-3 flex gap-2">
+            <button class="flex-1 py-2 bg-indigo-600 text-white rounded-lg">Add to Cart</button>
+            <button class="w-10 h-10 bg-gray-100 rounded-lg">♡</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      })
+    }
+    renderGrid();
+
+    // Modal logic
+    const adminBtn = document.getElementById('adminAddBtn');
+    const modal = document.getElementById('addProductModal');
+    const closeModal = document.getElementById('closeModal');
+    adminBtn.addEventListener('click',()=>{ modal.classList.remove('hidden'); window.scrollTo(0,0); });
+    closeModal.addEventListener('click',()=> modal.classList.add('hidden'));
+
+    // Drag & drop
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const selectFiles = document.getElementById('selectFiles');
+    const preview = document.getElementById('preview');
+
+    selectFiles.addEventListener('click',()=> fileInput.click());
+    fileInput.addEventListener('change',(e)=> handleFiles(e.target.files));
+
+    ['dragenter','dragover','dragleave','drop'].forEach(evt => {
+      dropzone.addEventListener(evt, e=> e.preventDefault());
+    });
+    dropzone.addEventListener('drop', e=> {
+      handleFiles(e.dataTransfer.files);
+    });
+
+    function handleFiles(files){
+      const arr = Array.from(files).slice(0,8);
+      preview.innerHTML = '';
+      arr.forEach(f=>{
+        const reader = new FileReader();
+        reader.onload = function(ev){
+          const img = document.createElement('img');
+          img.src = ev.target.result;
+          img.className = 'w-full h-28 object-cover rounded-lg';
+          const wrap = document.createElement('div');
+          wrap.className = 'bg-gray-50 p-1 rounded';
+          wrap.appendChild(img);
+          preview.appendChild(wrap);
+        }
+        reader.readAsDataURL(f);
+      })
+    }
+
+    // Fake save draft to localStorage
+    const saveDraftBtn = document.getElementById('saveDraft');
+    saveDraftBtn.addEventListener('click', ()=>{
+      const form = document.getElementById('addProductForm');
+      const data = new FormData(form);
+      const obj = {};
+      data.forEach((v,k)=> obj[k]=v);
+      localStorage.setItem('product_draft', JSON.stringify(obj));
+      alert('Draft saved locally');
+    });
+
+    // Publish (demo) - collect and show in console
+    const form = document.getElementById('addProductForm');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = new FormData(form);
+      const obj = {};
+      data.forEach((v,k)=> obj[k]=v);
+      console.log('Publish payload (demo):', obj);
+      alert('Product published (demo). In a real site this would call the backend API.)');
+      modal.classList.add('hidden');
+    });
+
+  </script>
+</body>
+</html>
